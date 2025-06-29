@@ -20,6 +20,4 @@ The other proposal was to use queueMicrotask to ensure the state was set in the 
 
 The best solution I found was using jotai to create a global state for the book and chapter. This allowed me to set the state in the correct order and avoid any race conditions.
 
-The Jotai configuration was a little complex as we needed to have an atom for Book, Chapter and a couple others for mantaining the "manually set chapter" and "automatic chapter".
-
-There are internal atoms that maintain the "manual" and "automatic" ones and there's a simple if check "if you want to get the currentChapter, check first with the manualChapter atom, otherwise return the defaultChapter".
+Basically there are two "basic" atoms and a couple derrived atoms that will help maintain the state of those basic atoms. The basic atoms are not exported and their read/write are handled by the derrived atoms. The key to the "select section" that was causing the issue is now eliminated due to the basic atoms being able to be anything and not relying on the state of the other.
