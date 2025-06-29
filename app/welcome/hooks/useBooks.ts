@@ -1,17 +1,23 @@
-import { useState } from 'react'
-import type { Book } from '../data'
+import { useAtom } from 'jotai'
+import { booksAtom, currentBookDerivedAtom } from '../atoms'
+import { useEffect } from 'react'
+import { books as initialBooks } from '../data'
 
-export const useBooks = ({ initialBooks }: { initialBooks: Book[] }) => {
-  const [books, setBooks] = useState<Book[]>(initialBooks)
-  const [currentBook, setCurrentBook] = useState<Book>()
+export const useBooks = () => {
+  // Basically remove all state variables from the hooks and replace with atoms
+  // const [books, setBooks] = useState<Book[]>(initialBooks)
+  // const [currentBook, setCurrentBook] = useState<Book>()
 
-  const setBook = (book: Book) => {
-    setCurrentBook(book)
-  }
+  const [books, setBooks] = useAtom(booksAtom)
+  const [currentBook, setCurrentBook] = useAtom(currentBookDerivedAtom)
+
+  useEffect(() => {
+    setBooks(initialBooks)
+  }, [])
 
   return {
     books,
     currentBook,
-    setBook,
+    setCurrentBook,
   }
 }

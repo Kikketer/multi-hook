@@ -1,19 +1,12 @@
-import { books as initialBooks } from './data'
 import { useBooks } from './hooks/useBooks'
 import { useChapters } from './hooks/useChapters'
 import { useJump } from './hooks/useJump'
 
 export function Welcome() {
-  const { currentBook, setBook, books } = useBooks({ initialBooks })
-  const { currentChapter, setChapter } = useChapters({
-    book: currentBook,
-  })
+  const { currentBook, setCurrentBook, books } = useBooks()
+  const { currentChapter, setCurrentChapter } = useChapters()
 
-  const { jumpToChapter } = useJump({
-    books,
-    setBook,
-    setChapter,
-  })
+  const { jumpToChapter } = useJump()
 
   console.log('Re-render ', currentBook)
 
@@ -31,19 +24,14 @@ export function Welcome() {
           <ul>
             {books.map((book) => (
               <li key={book.id}>
-                <button onClick={() => setBook(book)} type="button">
+                <button onClick={() => setCurrentBook(book)} type="button">
                   {book.name}
                 </button>
                 <ul>
                   {book.chapters.map((chapter) => (
                     <li className="pl-4" key={chapter.id}>
                       <button
-                        onClick={() =>
-                          jumpToChapter({
-                            book,
-                            chapter,
-                          })
-                        }
+                        onClick={() => jumpToChapter({ book, chapter })}
                         type="button"
                       >
                         {chapter.name}
